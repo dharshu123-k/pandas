@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Upload and Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .visualization img {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Dataset</h1>
+        {% if message %}
+        <div class="message {{ 'success' if 'successfully' in message else 'error' }}">
+            {{ message }}
+        </div>
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+            <label for="file">Choose a CSV or Excel file:</label>
+            <input type="file" name="file" id="file" required>
+            <button type="submit">Upload</button>
+        </form>
+        {% if uploaded_file_name %}
+        <p>Uploaded File: <strong>{{ uploaded_file_name }}</strong></p>
+        <a href="/visualize">Visualize Data</a>
+        {% endif %}
+        {% if plot_path %}
+        <div class="visualization">
+            <h3>Matplotlib Visualization:</h3>
+            <img src="{{ plot_path }}" alt="Hourly Power Consumption">
+        </div>
+        {% endif %}
+        {% if sunburst_chart %}
+        <div class="visualization">
+            <h3>Plotly Visualization:</h3>
+            {{ sunburst_chart | safe }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
